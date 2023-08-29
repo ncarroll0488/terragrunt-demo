@@ -3,13 +3,16 @@
 
 // Inputs are the values given to terraform variables. You may interpolate locals and dependencies here
 inputs = {
-  // some_varaiable = dependency.foo.outputs.some_output_value
+  # Name the VPC after the current directory
+  vpc_name                   = basename(dirname(abspath(".")))
+  primary_cidr               = "203.0.113.0/24"
+  provision_internal_subnets = true
 }
 
 // Note: You cannot use `dependency` references in locals, but you can use locals in dependency blocks.
 locals {
   // The name of the module you're pulling from source, such as "vpc". The / character is allowed
-  module_name = "change_me"
+  module_name = "vpc"
 
   // This will be the absolute path of the module source directory. We're using some string interpolation so that
   // this could be changed to source from a git repository in the rool HCL  without any extra work in leaf files.

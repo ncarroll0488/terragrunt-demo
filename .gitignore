@@ -1,0 +1,5 @@
+# Vim swapfiles
+**/*.sw*
+
+# Terraform state files
+**/*.tfstate

@@ -7,14 +7,11 @@ locals {
   environment_vars = read_terragrunt_config(find_in_parent_folders("env.hcl"))
 
   // This will be necessary
-  aws_region  = local.region_vars.locals.aws_region
-  environment = local.environment_vars.locals.environment
+  aws_region       = local.region_vars.locals.aws_region
+  environment_name = local.environment_vars.locals.environment_name
 
   // This will be the path between the root and the leaf terragrunt.hcl. This is tagged to all resources automatically, and makes it easier to find exactly which config file provisions a resource.
   auto_tag_tg_leaf = path_relative_to_include()
-
-  // If for some reason you want to store your S3 state in another account, set this. This does not affect the name of the bucket
-  s3_state_bucket_account_id = get_env("S3_STATE_BUCKET_ACCOUNT_ID", get_aws_account_id())
 
   // This configures the region where state files are stored. By default, it's the current region. This does not affect the name of the bucket.
   s3_state_bucket_region = get_env("S3_STATE_BUCKET_REGION", local.aws_region)
@@ -24,7 +21,7 @@ locals {
 
   // This is the path of the terraform module source directory. It can be a github repo, or in this case
   // a simple relative directory path.
-  module_source_path = abspath("../terraform/modules")
+  module_source_path = abspath("${get_parent_terragrunt_dir()}/../terraform/modules")
 
   // This is the directory from which 
   terragrunt_base_dir = abspath(".")
@@ -43,7 +40,7 @@ provider "aws" {
   // Automatically add tags. This saves us having to explicitly support tags in every module.
   default_tags {
     tags = {
-      TERRAGRUNT_ENV     = "${local.environment}"
+      TERRAGRUNT_ENV     = "${local.environment_name}"
       TERRAGRUNT_LEAF    = "${local.auto_tag_tg_leaf}"
     }
   }
@@ -57,9 +54,13 @@ generate "default_outputs" {
   path      = "__tg_default_outputs.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-outputs {
-  __aws_account_id = "${get_aws_account_id()}"
-  __aws_region = "${local.aws_region}"
+output "__aws_account_id" {
+  value = "${get_aws_account_id()}"
+  description = "Account ID of this module"
+}
+output "__aws_region" {
+  value = "${local.aws_region}"
+  description = "Region of this module"
 }
 EOF
 }
@@ -69,7 +70,7 @@ remote_state {
   backend = "s3"
   config = {
     encrypt        = true
-    bucket         = "terraform-state-${local.s3_state_bucket_account_id}-${local.aws_region}-${local.environment}"
+    bucket         = "terraform-state-${get_aws_account_id()}-${local.aws_region}-${local.environment_name}"
     key            = "${path_relative_to_include()}/terraform.tfstate"
     region         = local.s3_state_bucket_region
     dynamodb_table = local.dynamodb_lock_table

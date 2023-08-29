@@ -1,0 +1,24 @@
+## Requirements
+
+No requirements.
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| aws | n/a |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| vpc\_endpoint\_id | ID of the VPC in which to create the interface | `string` | n/a | yes |
+| vpc\_endpoint\_interface\_sg\_ids | Security group IDs to assign to interface-based service endpoints | `list(string)` | `[]` | no |
+| vpc\_endpoint\_route\_tables | A list of route tables to which gateway service endponts will be attached | `list(string)` | n/a | yes |
+| vpc\_endpoint\_services | A list of services which will require an in-vpc service endpoint | `list(string)` | `[]` | no |
+| vpc\_endpoint\_subnets | A list of subnet IDs into which interface service endpoint interfaces will be placed | `list(string)` | n/a | yes |
+
+## Outputs
+
+No output.
+
