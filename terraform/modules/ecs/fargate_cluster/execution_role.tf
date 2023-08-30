@@ -48,12 +48,12 @@ data "aws_iam_policy_document" "execution_policy" {
 resource "aws_iam_policy" "execution_policy" {
   name        = "${var.cluster_name}_execution"
   path        = var.iam_entity_path
-  description = "My test policy"
+  description = "Policy for ${var.cluster_name} execution role""
 
   policy = data.aws_iam_policy_document.execution_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "execution_policy" {
-  role       = aws_iam_role.task.name
+  role       = aws_iam_role.execution.name
   policy_arn = aws_iam_policy.execution_policy.arn
 }
