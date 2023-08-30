@@ -55,11 +55,11 @@ data "aws_iam_policy_document" "service_policy" {
   }
 }
 
-aws_iam_policy "service_policy" {
-  name = "${var.cluster_name}_service"
+resource "aws_iam_policy" "service_policy" {
+  name        = "${var.cluster_name}_service"
   path        = var.iam_entity_path
-  description = "Policy for ${var.cluster_name} service role""
-  policy = data.aws_iam_policy_document.service_policy.json
+  description = "Policy for ${var.cluster_name} service role"
+  policy      = data.aws_iam_policy_document.service_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "service_policy" {
