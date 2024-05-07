@@ -4,7 +4,7 @@
 // Inputs are the values given to terraform variables. You may interpolate locals and dependencies here
 inputs = {
   # Name the VPC after the current directory
-  vpc_name                   = basename(dirname(abspath(".")))
+  vpc_name                   = basename(get_terragrunt_dir())
   primary_cidr               = "203.0.113.0/24"
   provision_internal_subnets = true
 }

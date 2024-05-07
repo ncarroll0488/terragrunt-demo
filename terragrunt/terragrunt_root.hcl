@@ -23,8 +23,6 @@ locals {
   // a simple relative directory path.
   module_source_path = abspath("${get_parent_terragrunt_dir()}/../terraform/modules")
 
-  // This is the directory from which 
-  terragrunt_base_dir = abspath(".")
 }
 
 // Generate an AWS provider block
