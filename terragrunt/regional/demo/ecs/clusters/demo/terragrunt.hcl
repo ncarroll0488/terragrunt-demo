@@ -3,7 +3,7 @@
 
 // Inputs are the values given to terraform variables. You may interpolate locals and dependencies here
 inputs = {
-  cluster_name = basename(abspath("."))
+  cluster_name = basename(get_terragrunt_dir())
 }
 
 // Note: You cannot use `dependency` references in locals, but you can use locals in dependency blocks.
