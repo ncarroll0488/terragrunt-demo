@@ -4,7 +4,7 @@ This is a demo of a basic terraform/terragrunt integration supporting a multi-re
     * This is configured in `terragrunt/regional/demo/vpc/demo`
 * VPC endpoints to access the S3 and DynamoDB services
     * This is configured in `terragrunt/regional/demo/vpc_endpoints/demo`
-* An ECS fargate cluster with Service, Executuion, and Task roles and accompanying IAM policies
+* An ECS fargate cluster with Service, Execution, and Task roles and accompanying IAM policies
     * This is configured in `terragrunt/regional/demo/ecs/clusters/demo`
 
 # How to use this
