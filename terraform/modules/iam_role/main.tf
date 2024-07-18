@@ -34,12 +34,6 @@ resource "aws_iam_role" "main" {
   name_prefix        = var.role_name_prefix
   path               = var.role_path
   assume_role_policy = data.aws_iam_policy_document.trust_policy.json
-  /*
-  dynamic inline_policy {
-    name   = var.role_name_prefix
-    policy = var.inline_policy
-  }
-*/
 }
 
 resource "aws_iam_role_policy" "main" {
