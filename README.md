@@ -6,6 +6,7 @@ This is a demo of a basic terraform/terragrunt integration supporting a multi-re
     * This is configured in `terragrunt/regional/demo/vpc_endpoints/demo`
 * An ECS fargate cluster with Service, Execution, and Task roles and accompanying IAM policies
     * This is configured in `terragrunt/regional/demo/ecs/clusters/demo`
+This is not designed to create any useful infrastructure. Rather, this serves to demonstrate how terragrunt manages dependencies.
 
 # How to use this
 1) Install [Terraform](https://developer.hashicorp.com/terraform/downloads)
