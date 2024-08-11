@@ -37,7 +37,7 @@ include "root" {
 
 
 dependency "vpc" {
-  config_path = "${local.leaf_dependency_path}/vpc/demo"
+  config_path = "${local.leaf_dependency_path}/vpc/demo1"
 }
 
 // The 'dependencies' block is only needed if terragrunt needs to run leaves in a particular order, but there's no 

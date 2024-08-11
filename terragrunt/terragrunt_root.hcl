@@ -19,9 +19,9 @@ locals {
   // This overrides the name of the lock table. You probably don't need to change this.
   dynamodb_lock_table = get_env("DYNAMODB_LOCK_TABLE", "terraform-locks")
 
-  // This is the path of the terraform module source directory. It can be a github repo, or in this case
-  // a simple relative directory path.
-  module_source_path = abspath("${get_parent_terragrunt_dir()}/../terraform/modules")
+  // This is the path of the terraform module source directory.
+  // The name of the module ("vpc" for instance) will be appended to it in the leaf configuration
+  module_source_path = get_env("TG_MODULE_SOURCE", "git@github.com:ncarroll0488/terraform-modules.git//src/")
 
 }
 
