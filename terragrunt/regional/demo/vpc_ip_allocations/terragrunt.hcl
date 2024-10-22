@@ -6,5 +6,5 @@ inputs = {
 }
 
 terraform {
-  source = "git@github.com:ncarroll0488/terraform-modules.git//src/ip_allocation"
+  source = "git::https://github.com/ncarroll0488/terraform-modules.git//src/generic/ip_allocation"
 }

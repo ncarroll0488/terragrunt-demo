@@ -1,21 +1,18 @@
 # What this does
 This is a demo of a basic terraform/terragrunt integration supporting a multi-region deploy. It will create:
-* A VPC with 3 local-only (no internet) subnets, with accompanying route tables.
-    * This is configured in `terragrunt/regional/demo/vpc/demo`
+* A module to deterministically emit IP addressed based on region, environment
+    * This is configured in `terragrunt/regional/demo
+* A VPC with 9 subnets, with 3 each having default routes pointing IGW, NAT, null
+    * This is configured in `terragrunt/regional/demo/vpc/demo1`
 * VPC endpoints to access the S3 and DynamoDB services
-    * This is configured in `terragrunt/regional/demo/vpc_endpoints/demo`
-* An ECS fargate cluster with Service, Execution, and Task roles and accompanying IAM policies
-    * This is configured in `terragrunt/regional/demo/ecs/clusters/demo`
+    * This is configured in `terragrunt/regional/demo/vpc_endpoints/demo1`
 
 This is not designed to create any useful infrastructure. Rather, this serves to demonstrate how terragrunt manages dependencies.
 
 # How to use this
-1) Install [Terraform](https://developer.hashicorp.com/terraform/downloads)
-1) Install [Terragrunt](https://terragrunt.gruntwork.io/docs/getting-started/install/)
-1) Authenticate to AWS. You must set an `AWS_DEFAULT_REGION`. Use `aws sts get-caller-identity` to test
-1) cd into `terragrunt/regional`
+1) Install docker-compose
+1) Run `docker-compose run --rm terragrunt`
+1) cd into the `regional` directory
 1) Run `terragrunt run-all apply`
-1) You may be asked to create a state bucket, do so.
-1) Answer yes if you wish to create everything
 
-This deployment should not cost anything on a live AWS environment, however it's recommended to use `terragrunt run-all destroy` to remove infrastrucure when done demoing. You may wish to use something like [Localstack](https://localstack.cloud), however this may require extensive modification of the root terragrunt HCL's provider and backend blocks.
+Note that this deployment exists soley on Localstack, so no real infrastructure will be created. There is additional module configuration for ECS, but localstack community does not support ECS as of now.

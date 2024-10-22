@@ -9,6 +9,7 @@ locals {
   // This will be necessary
   aws_region       = local.region_vars.locals.aws_region
   environment_name = local.environment_vars.locals.environment_name
+  // aws_endpoint     = get_env("AWS_ENDPOINT_URL", "127.0.0.1:4566")
 
   // This will be the path between the root and the leaf terragrunt.hcl. This is tagged to all resources automatically, and makes it easier to find exactly which config file provisions a resource.
   auto_tag_tg_leaf = path_relative_to_include()
@@ -18,7 +19,7 @@ locals {
 
   // This is the path of the terraform module source directory.
   // The name of the module ("vpc" for instance) will be appended to it in the leaf configuration
-  module_source_path = get_env("TG_MODULE_SOURCE", "git@github.com:ncarroll0488/terraform-modules.git//src/")
+  module_source_path = get_env("TG_MODULE_SOURCE", "git::https://github.com/ncarroll0488/terraform-modules.git//src/aws/")
 
 }
 
@@ -39,10 +40,7 @@ provider "aws" {
   // Localstack configuration
   profile                  = "localstack"
   shared_config_files      = ["${get_parent_terragrunt_dir()}/.aws.localstack.conf"]
-  endpoints {
-    sts = "http://localhost:4566"
-  }
-
+ 
   // Automatically add tags. This saves us having to explicitly support tags in every module.
   default_tags {
     tags = {
@@ -84,4 +82,16 @@ inputs = merge(
     key3 = somefunction(val3)
   }
 )
+*/
+
+
+
+
+/*
+
+ endpoints {
+    sts = "http://localhost:4566"
+ }
+
+
 */
