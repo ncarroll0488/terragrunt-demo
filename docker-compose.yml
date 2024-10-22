@@ -1,0 +1,41 @@
+# https://docs.localstack.cloud/getting-started/installation/
+
+version: "3.8"
+
+services:
+  localstack:
+    container_name: "${LOCALSTACK_DOCKER_NAME:-localstack-main}"
+    image: localstack/localstack:3.7.0
+    ports:
+      - "127.0.0.1:4566:4566"            # LocalStack Gateway
+      - "127.0.0.1:4510-4559:4510-4559"  # external services port range
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - DEBUG=${DEBUG:-0}
+      - LOCALSTACK_HOST=localstack:4566
+    volumes:
+      - "${LOCALSTACK_VOLUME_DIR:-./.localstack_volume}:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - localstack
+
+  terragrunt:
+    container_name: "${TERRAGRUNT_DOCKER_NAME:-terragrunt}"
+    build:
+      context: ./terragrunt
+      args:
+        - "TERRAFORM_VERSION=${TERRAFORM_VERSION:-1.9.5}"
+    volumes:
+      - "${TERRAGRUNT_VOLUME_DIR:-./}:/app"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - localstack
+    environment:
+      AWS_ENDPOINT_URL: "http://localstack:4566"
+      AWS_DEFAULT_REGION: "us-east-1"
+    networks:
+      - localstack
+
+networks:
+  localstack:

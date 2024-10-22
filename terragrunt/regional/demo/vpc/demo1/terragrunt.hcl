@@ -4,8 +4,19 @@
 // Inputs are the values given to terraform variables. You may interpolate locals and dependencies here
 inputs = {
   # Name the VPC after the current directory
-  vpc_name                   = basename(get_terragrunt_dir())
-  primary_cidr               = "203.0.113.0/24"
+  vpc_name = basename(get_terragrunt_dir())
+  primary_cidr = one(
+    [for k, v in dependency.ip_allocation.outputs.ip_inventory : k if v == {
+      "account" = include.root.locals.aws_account_id,
+      "env"     = include.root.locals.environment_name,
+      "region"  = include.root.locals.aws_region,
+      "vpcname" = basename(get_terragrunt_dir())
+      }
+    ]
+  )
+
+  provision_public_subnets   = true
+  provision_private_subnets  = true
   provision_internal_subnets = true
 }
 
@@ -19,7 +30,7 @@ locals {
   module_source_path = "${include.root.locals.module_source_path}/${local.module_name}"
 
   // The vast majority of includes will be done relative to the current environment. This will return the location of "environment.hcl"
-  leaf_dependency_path = abspath(find_in_parent_folders("env.hcl"))
+  leaf_dependency_path = dirname(abspath(find_in_parent_folders("env.hcl")))
 }
 
 // Name this include block "root". Refer to locals in the root config with "include.root"
@@ -30,6 +41,10 @@ include "root" {
 
   // Traverse down the directory tree until we find the next 'terragrunt.hcl'
   path = find_in_parent_folders()
+}
+
+dependency "ip_allocation" {
+  config_path = "${local.leaf_dependency_path}/vpc_ip_allocations"
 }
 
 // The 'dependency' block can be specified many times, and is used to build a dependency tree as well as export data
