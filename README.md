@@ -17,4 +17,4 @@ This is not designed to create any useful infrastructure. Rather, this serves to
 1) cd into the `regional` directory
 1) Run `terragrunt run-all apply`
 
-Note that this deployment exists soley on localstack, so no real infrastructure will be created. There is additional disabled module configuration for ECS, but localstack community does not support ECS as of now.
+Note that this deployment exists solely on localstack, so no real infrastructure will be created. There is additional disabled module configuration for ECS, but localstack community does not support ECS as of now.
