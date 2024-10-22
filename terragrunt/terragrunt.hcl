@@ -1,1 +1,1 @@
-terragrunt_root.hcl
+terragrunt_root.hcl.localstack

@@ -18,7 +18,7 @@ locals {
   module_source_path = "${include.root.locals.module_source_path}/${local.module_name}"
 
   // The vast majority of includes will be done relative to the current environment. This will return the location of "environment.hcl"
-  leaf_dependency_path = abspath(dirname(find_in_parent_folders("env.hcl")))
+  leaf_dependency_path = dirname(abspath(find_in_parent_folders("env.hcl")))
 }
 
 // Name this include block "root". Refer to locals in the root config with "include.root"
